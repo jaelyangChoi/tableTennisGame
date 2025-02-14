@@ -1,0 +1,32 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 100
+    open-in-view: false
+    output:
+      ansi:
+        enabled: always
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:tcp://localhost/~/h2DbFile/tableTennis
+    username: sa
+    password:
+
+logging:
+  level:
+    org.hibernate.orm.jdbc.bind: TRACE
