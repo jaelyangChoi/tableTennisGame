@@ -1,36 +1,30 @@
-package my.tableTennisGame.service;
+package my.tableTennisGame.service.init;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import my.tableTennisGame.domain.user.User;
 import my.tableTennisGame.domain.user.UserStatus;
 import my.tableTennisGame.repository.UserRepository;
-import my.tableTennisGame.web.dto.init.FakerApiRespDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static my.tableTennisGame.web.dto.init.FakerApiRespDto.*;
+import static my.tableTennisGame.web.dto.common.FakerApiRespDto.UserDto;
 
 @Slf4j
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class InitService {
 
-    @PersistenceContext
-    private EntityManager em;
-
-    @Autowired
-    private UserRepository userRepository;
+    private final EntityManager em;
+    private final UserRepository userRepository;
 
     /**
      * /init 호출 시, 테이블 초기화
      */
-    @Transactional
     public void resetDatabase() {
         log.info("Database reset");
 
@@ -52,8 +46,7 @@ public class InitService {
     /**
      * UserDto의 fakerId를 기준으로 오름차순 정렬 후 저장
      */
-    @Transactional
-    public void intDatabase(List<UserDto> userDtos) {
+    public void saveInitData(List<UserDto> userDtos) {
         // 1. id 기준 오름차순 정렬
         List<UserDto> sortedUserDtos = userDtos.stream()
                 .sorted(Comparator.comparing(UserDto::getId))
@@ -92,4 +85,5 @@ public class InitService {
         return em.createNativeQuery("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'PUBLIC'")
                 .getResultList();
     }
+
 }

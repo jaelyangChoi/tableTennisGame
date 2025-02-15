@@ -1,9 +1,10 @@
 package my.tableTennisGame.web;
 
 import lombok.RequiredArgsConstructor;
-import my.tableTennisGame.service.InitService;
+import my.tableTennisGame.service.common.ExternalApiService;
+import my.tableTennisGame.service.init.InitService;
 import my.tableTennisGame.web.dto.ApiResponse;
-import my.tableTennisGame.web.dto.init.FakerApiRespDto;
+import my.tableTennisGame.web.dto.common.FakerApiRespDto;
 import my.tableTennisGame.web.dto.init.InitReqDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,13 +12,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 public class SystemController {
 
     private final InitService initService;
+    private final ExternalApiService externalApiService;
 
     /**
      * 1. 헬스체크 API
@@ -35,26 +38,13 @@ public class SystemController {
         // 1. 테이블 초기화
         initService.resetDatabase();
 
-        // 2. 전달받은 데이터로 fakerAPI 호출하여 서비스에 필요한 회원 정보 저장
-        String url = generateApiUrl(initReqDto);
+        // 2. 전달받은 데이터로 fakerAPI 호출
+        List<FakerApiRespDto.UserDto> userDtos = externalApiService.fetchFakers(initReqDto.getSeed(), initReqDto.getQuantity());
 
-        // 2-1. 외부 API 호출
-        ResponseEntity<FakerApiRespDto> response = new RestTemplate().getForEntity(url, FakerApiRespDto.class);
-        if (response.getStatusCode() != HttpStatus.OK || response.getBody() == null)
-            throw new IllegalStateException();
-
-        // 2-2. 사용자 데이터 추출하여 테이블 초기화
-        initService.intDatabase(response.getBody().getData());
+        // 3. 서비스에 필요한 회원 정보 저장
+        initService.saveInitData(userDtos);
 
         return new ResponseEntity<>(ApiResponse.success(null), HttpStatus.OK);
     }
 
-    /**
-     * 전달받은 seed 와 quantity 값을 이용해 외부 API URL 생성
-     */
-    private String generateApiUrl(InitReqDto initReqDto) {
-        String seed = initReqDto.getSeed();
-        String quantity = initReqDto.getQuantity();
-        return String.format("https://fakerapi.it/api/v1/users?_seed=%s&_quantity=%s&_locale=ko_KR", seed, quantity);
-    }
 }

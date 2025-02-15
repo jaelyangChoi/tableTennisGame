@@ -1,4 +1,4 @@
-package my.tableTennisGame.web.dto.init;
+package my.tableTennisGame.web.dto.common;
 
 import lombok.Data;
 

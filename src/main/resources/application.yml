@@ -15,6 +15,13 @@ logging:
   level:
     org.hibernate.SQL: debug
 
+external-api:
+  faker:
+    base-url: "https://fakerapi.it"
+    endpoints:
+      fetch-users: "/api/v1/users"
+    locale: "ko_KR"
+
 ---
 spring:
   config:

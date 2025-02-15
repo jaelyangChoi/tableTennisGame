@@ -5,6 +5,7 @@ import jakarta.persistence.Query;
 import my.tableTennisGame.domain.user.User;
 import my.tableTennisGame.domain.user.UserStatus;
 import my.tableTennisGame.repository.UserRepository;
+import my.tableTennisGame.service.init.InitService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,11 +13,13 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.util.Arrays;
 import java.util.List;
 
-import static my.tableTennisGame.web.dto.init.FakerApiRespDto.UserDto;
+import static my.tableTennisGame.web.dto.common.FakerApiRespDto.UserDto;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
@@ -52,7 +55,7 @@ class InitServiceTest {
         verify(em).createNativeQuery("SET REFERENTIAL_INTEGRITY FALSE"); //외래 키 비활성화 확인
 
         for (String tableName : mockTableNames)
-            verify(em).createNativeQuery("TRUNCATE TABLE " + tableName); //테이블 삭제 확인
+            verify(em).createNativeQuery("TRUNCATE TABLE " + tableName + " RESTART IDENTITY"); //테이블 삭제 확인
 
         verify(em).createNativeQuery("SET REFERENTIAL_INTEGRITY TRUE"); //외래 키 활성화 확인
 
@@ -68,8 +71,8 @@ class InitServiceTest {
         int thirdId = 61;
         List<UserDto> unsortedDtos = getUnsortedDtos(firstId, secondId, thirdId);
 
-        // when: intDatabase() 메소드 실행
-        initService.intDatabase(unsortedDtos);
+        // when
+        initService.saveInitData(unsortedDtos);
 
         // then: repository.saveAll()에 전달된 인자를 캡처하여 정렬 여부 검증
         @SuppressWarnings("unchecked")
@@ -82,7 +85,7 @@ class InitServiceTest {
         assertEquals(secondId, savedUsers.get(1).getFakerId());
         assertEquals(thirdId, savedUsers.get(2).getFakerId());
 
-        //상태 값 확인
+        // 상태 값 확인
         assertEquals(UserStatus.ACTIVE, savedUsers.get(0).getStatus());
         assertEquals(UserStatus.WAIT, savedUsers.get(1).getStatus());
         assertEquals(UserStatus.NON_ACTIVE, savedUsers.get(2).getStatus());
