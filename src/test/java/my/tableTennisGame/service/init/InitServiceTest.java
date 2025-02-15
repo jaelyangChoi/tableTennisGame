@@ -1,11 +1,10 @@
-package my.tableTennisGame.service;
+package my.tableTennisGame.service.init;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import my.tableTennisGame.domain.user.User;
 import my.tableTennisGame.domain.user.UserStatus;
 import my.tableTennisGame.repository.UserRepository;
-import my.tableTennisGame.service.init.InitService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

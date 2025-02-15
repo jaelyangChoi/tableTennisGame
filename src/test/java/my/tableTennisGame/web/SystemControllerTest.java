@@ -44,6 +44,7 @@ class SystemControllerTest {
     }
 
     @DisplayName("초기화 성공 응답 테스트")
+    @Test
     void initSuccess() throws Exception {
         //given
         InitReqDto initReqDto = new InitReqDto();
