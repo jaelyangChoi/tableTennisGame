@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class InitReqDto {
-    private String seed;
-    private String quantity;
+    private int seed;
+    private int quantity;
 }

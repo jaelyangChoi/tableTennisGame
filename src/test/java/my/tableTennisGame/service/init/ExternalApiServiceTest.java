@@ -47,8 +47,8 @@ class ExternalApiServiceTest {
     @Test
     void fetchFakers_success() {
         // given
-        String seed = "10";
-        String quantity = "5";
+        int seed = 10;
+        int quantity = 5;
 
         // 외부 API 호출 정보 설정 (FakerApi)
         FakerApi fakerApi = new FakerApi();

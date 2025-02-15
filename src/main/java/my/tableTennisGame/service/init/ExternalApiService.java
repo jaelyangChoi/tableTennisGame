@@ -21,7 +21,7 @@ public class ExternalApiService {
     /**
      * faker API 호출하여 body data 추출
      */
-    public List<FakerApiRespDto.UserDto> fetchFakers(String seed, String quantity) {
+    public List<FakerApiRespDto.UserDto> fetchFakers(int seed, int quantity) {
         log.info("Fetching fakerapi");
         FakerApi fakerApi = externalApiProperties.getFakerApi();
 

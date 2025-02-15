@@ -8,6 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -48,8 +49,8 @@ class SystemControllerTest {
     void initSuccess() throws Exception {
         //given
         InitReqDto initReqDto = new InitReqDto();
-        initReqDto.setSeed("30");
-        initReqDto.setQuantity("40");
+        initReqDto.setSeed(30);
+        initReqDto.setQuantity(40);
 
 
         //when & then
@@ -57,7 +58,7 @@ class SystemControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(initReqDto)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.code").value(200))
+                .andExpect(jsonPath("$.code").value(HttpStatus.OK.value()))
                 .andExpect(jsonPath("$.message").value("API 요청이 성공했습니다."))
                 .andExpect(jsonPath("$.result").doesNotExist());
     }
