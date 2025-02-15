@@ -18,6 +18,17 @@ external-api:
     endpoint: "/api/v1/users"
     locale: "ko_KR"
 
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    disable-swagger-default-url: true
+  cache:
+    disabled: true
+  default-produces-media-type: application/json
+
 ---
 spring:
   config:
