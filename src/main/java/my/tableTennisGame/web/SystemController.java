@@ -1,10 +1,10 @@
 package my.tableTennisGame.web;
 
 import lombok.RequiredArgsConstructor;
-import my.tableTennisGame.service.common.ExternalApiService;
+import my.tableTennisGame.service.init.ExternalApiService;
 import my.tableTennisGame.service.init.InitService;
 import my.tableTennisGame.web.dto.ApiResponse;
-import my.tableTennisGame.web.dto.common.FakerApiRespDto;
+import my.tableTennisGame.web.dto.init.FakerApiRespDto;
 import my.tableTennisGame.web.dto.init.InitReqDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

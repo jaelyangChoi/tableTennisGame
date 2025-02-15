@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Comparator;
 import java.util.List;
 
-import static my.tableTennisGame.web.dto.common.FakerApiRespDto.UserDto;
+import static my.tableTennisGame.web.dto.init.FakerApiRespDto.UserDto;
 
 @Slf4j
 @Service

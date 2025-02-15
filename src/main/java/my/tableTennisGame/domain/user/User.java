@@ -3,7 +3,7 @@ package my.tableTennisGame.domain.user;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
-import my.tableTennisGame.domain.common.BaseTimeEntity;
+import my.tableTennisGame.domain.BaseTimeEntity;
 
 @Entity
 @Table(name="user_tb")

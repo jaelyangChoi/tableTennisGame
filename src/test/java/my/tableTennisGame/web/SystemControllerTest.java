@@ -1,6 +1,6 @@
 package my.tableTennisGame.web;
 
-import my.tableTennisGame.service.common.ExternalApiService;
+import my.tableTennisGame.service.init.ExternalApiService;
 import my.tableTennisGame.service.init.InitService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

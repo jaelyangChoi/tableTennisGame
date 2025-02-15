@@ -1,9 +1,9 @@
-package my.tableTennisGame.service.common;
+package my.tableTennisGame.service.init;
 
 import lombok.RequiredArgsConstructor;
 import my.tableTennisGame.config.ExternalApiProperties;
 import my.tableTennisGame.config.ExternalApiProperties.FakerApi;
-import my.tableTennisGame.web.dto.common.FakerApiRespDto;
+import my.tableTennisGame.web.dto.init.FakerApiRespDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 

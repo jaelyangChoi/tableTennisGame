@@ -1,4 +1,4 @@
-package my.tableTennisGame.domain.common;
+package my.tableTennisGame.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

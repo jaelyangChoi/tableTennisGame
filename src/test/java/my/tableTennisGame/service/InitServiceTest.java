@@ -17,7 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Arrays;
 import java.util.List;
 
-import static my.tableTennisGame.web.dto.common.FakerApiRespDto.UserDto;
+import static my.tableTennisGame.web.dto.init.FakerApiRespDto.UserDto;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyString;

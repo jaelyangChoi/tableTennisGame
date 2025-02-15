@@ -1,5 +1,6 @@
-package my.tableTennisGame.common;
+package my.tableTennisGame.common.handler;
 
+import my.tableTennisGame.common.exception.WrongRequestException;
 import my.tableTennisGame.web.dto.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

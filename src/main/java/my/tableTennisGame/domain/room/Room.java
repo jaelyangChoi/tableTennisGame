@@ -2,7 +2,7 @@ package my.tableTennisGame.domain.room;
 
 import jakarta.persistence.*;
 import lombok.*;
-import my.tableTennisGame.domain.common.BaseTimeEntity;
+import my.tableTennisGame.domain.BaseTimeEntity;
 import my.tableTennisGame.domain.user.User;
 
 @Entity
