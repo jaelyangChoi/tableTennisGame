@@ -7,19 +7,15 @@ spring:
         format_sql: true
         default_batch_fetch_size: 100
     open-in-view: false
-    output:
-      ansi:
-        enabled: always
 
 logging:
   level:
     org.hibernate.SQL: debug
 
 external-api:
-  faker:
+  faker-api:
     base-url: "https://fakerapi.it"
-    endpoints:
-      fetch-users: "/api/v1/users"
+    endpoint: "/api/v1/users"
     locale: "ko_KR"
 
 ---

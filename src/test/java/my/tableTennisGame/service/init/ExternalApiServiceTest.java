@@ -53,7 +53,7 @@ class ExternalApiServiceTest {
         // 외부 API 호출 정보 설정 (FakerApi)
         FakerApi fakerApi = new FakerApi();
         fakerApi.setBaseUrl("https://fakeapi.it"); // service 코드에서는 "https://"를 제거합니다.
-        fakerApi.setEndpoints("/api/v1/users");
+        fakerApi.setEndpoint("/api/v1/users");
         fakerApi.setLocale("ko_KR");
 
         // 응답 DTO 설정

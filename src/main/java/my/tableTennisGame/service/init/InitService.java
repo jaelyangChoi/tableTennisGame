@@ -47,6 +47,7 @@ public class InitService {
      * UserDto의 fakerId를 기준으로 오름차순 정렬 후 저장
      */
     public void saveInitData(List<UserDto> userDtos) {
+        log.info("Save init data");
         // 1. id 기준 오름차순 정렬
         List<UserDto> sortedUserDtos = userDtos.stream()
                 .sorted(Comparator.comparing(UserDto::getId))

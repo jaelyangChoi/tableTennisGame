@@ -13,7 +13,7 @@ public class ExternalApiProperties {
     @Data
     public static class FakerApi {
         private String baseUrl;
-        private String endpoints;
+        private String endpoint;
         private String locale;
     }
 }
