@@ -2,6 +2,7 @@ package my.tableTennisGame.web;
 
 import lombok.RequiredArgsConstructor;
 import my.tableTennisGame.service.user.UserService;
+import my.tableTennisGame.web.docs.UserControllerDocs;
 import my.tableTennisGame.web.dto.ApiResponse;
 import my.tableTennisGame.web.dto.user.UserRespDto.UserListRespDto;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class UserController {
+public class UserController implements UserControllerDocs {
 
     private final UserService userService;
 
