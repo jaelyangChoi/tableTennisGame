@@ -16,9 +16,7 @@ public class RoomController {
 
     @PostMapping
     public ApiResponse<?> createRoom(@RequestBody RoomCreateReqDto roomCreateReqDto){
-
         roomService.createRoom(roomCreateReqDto);
-        //todo: user-room 생성해야 함. 트랜잭션 처리 어떻게 하지..? 서비스에서 하는게 맞을 듯.
         return ApiResponse.success(null);
     }
 }
