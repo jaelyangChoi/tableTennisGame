@@ -5,6 +5,7 @@ import jakarta.persistence.Query;
 import my.tableTennisGame.domain.user.User;
 import my.tableTennisGame.domain.user.UserStatus;
 import my.tableTennisGame.repository.UserRepository;
+import my.tableTennisGame.service.InitService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -54,7 +55,7 @@ class InitServiceTest {
         verify(em).createNativeQuery("SET REFERENTIAL_INTEGRITY FALSE"); //외래 키 비활성화 확인
 
         for (String tableName : mockTableNames)
-            verify(em).createNativeQuery("TRUNCATE TABLE " + tableName + " RESTART IDENTITY"); //테이블 삭제 확인
+            verify(em).createNativeQuery("TRUNCATE TABLE " + tableName); //테이블 삭제 확인
 
         verify(em).createNativeQuery("SET REFERENTIAL_INTEGRITY TRUE"); //외래 키 활성화 확인
 

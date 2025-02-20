@@ -48,7 +48,7 @@ public class InitService {
 
         // 테이블 초기화
         for (String tableName : getAllTableNames()) {
-            em.createNativeQuery("TRUNCATE TABLE " + tableName + " RESTART IDENTITY").executeUpdate();
+            em.createNativeQuery("TRUNCATE TABLE " + tableName).executeUpdate();
             log.info("Table " + tableName + " has been reset");
         }
 
