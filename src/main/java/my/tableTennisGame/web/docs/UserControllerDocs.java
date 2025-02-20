@@ -19,5 +19,5 @@ public interface UserControllerDocs {
     @Operation(summary = "유저 전체 조회 API", description = "모든 유저의 정보를 id 기준 오름차순으로 정렬하여 조회")
     @Parameter(name = "pageable", description = "페이지 정보")
     @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = ApiResponseSchema.class)))
-    public my.tableTennisGame.web.dto.ApiResponse<UserRespDto.UserListRespDto> findUserList(@PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable);
+    public my.tableTennisGame.web.dto.ApiResponse<UserRespDto.UserListRespDto> getAllUsers(@PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable);
 }

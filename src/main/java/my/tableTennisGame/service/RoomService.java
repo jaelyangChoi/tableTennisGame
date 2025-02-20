@@ -5,6 +5,9 @@ import my.tableTennisGame.domain.room.Room;
 import my.tableTennisGame.domain.user.User;
 import my.tableTennisGame.repository.RoomRepository;
 import my.tableTennisGame.web.dto.room.RoomReqDto.RoomCreateReqDto;
+import my.tableTennisGame.web.dto.room.RoomRespDto.RoomListRespDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,5 +31,10 @@ public class RoomService {
 
         //3. 사용자-방 참여 매핑 (방 생성자가 방에 자동 참여)
         userRoomService.addUserToRoom(host, room);
+    }
+
+    public RoomListRespDto findRoomList(Pageable pageable) {
+        Page<Room> roomPage = roomRepository.findAll(pageable);
+        return new RoomListRespDto(roomPage);
     }
 }

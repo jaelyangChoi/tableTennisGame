@@ -20,7 +20,7 @@ public class UserRespDto {
 
         public UserListRespDto(Page<User> userPage) {
             this.totalElements = (int) userPage.getTotalElements();
-            this.totalPages = (int) userPage.getTotalPages();
+            this.totalPages = userPage.getTotalPages();
             this.userList = userPage.getContent().stream()
                     .map(UserDto::new).toList();
         }

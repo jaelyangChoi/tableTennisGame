@@ -26,10 +26,8 @@ public class UserService {
     private final UserRoomRepository userRoomRepository;
 
     public UserListRespDto findUserList(Pageable pageable) {
-
-        Page<User> userPages = userRepository.findAll(pageable);
-
-        return new UserListRespDto(userPages);
+        Page<User> userPage = userRepository.findAll(pageable);
+        return new UserListRespDto(userPage);
     }
 
     /**

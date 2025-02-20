@@ -23,10 +23,8 @@ public class UserController implements UserControllerDocs {
      * - 모든 회원 정보를 응답(id 기준 오름차순으로 정렬해서 반환)
      */
     @GetMapping("/user")
-    public ApiResponse<UserListRespDto> findUserList(@PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
-
+    public ApiResponse<UserListRespDto> getAllUsers(@PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         UserListRespDto userListRespDto = userService.findUserList(pageable);
-
         return ApiResponse.success(userListRespDto);
     }
 }
