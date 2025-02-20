@@ -1,25 +1,20 @@
 package my.tableTennisGame.web;
 
 import lombok.RequiredArgsConstructor;
-import my.tableTennisGame.service.init.ExternalApiService;
-import my.tableTennisGame.service.init.InitService;
+import my.tableTennisGame.service.InitService;
 import my.tableTennisGame.web.docs.SystemControllerDocs;
 import my.tableTennisGame.web.dto.ApiResponse;
-import my.tableTennisGame.web.dto.init.FakerApiRespDto;
 import my.tableTennisGame.web.dto.init.InitReqDto;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 public class SystemController implements SystemControllerDocs {
 
     private final InitService initService;
-    private final ExternalApiService externalApiService;
 
     /**
      * 1. 헬스체크 API
@@ -35,15 +30,7 @@ public class SystemController implements SystemControllerDocs {
      */
     @PostMapping("/init")
     public ApiResponse<?> init(@RequestBody InitReqDto reqDto) {
-        // 1. 테이블 초기화
-        initService.resetDatabase();
-
-        // 2. 전달받은 데이터로 fakerAPI 호출
-        List<FakerApiRespDto.UserDto> userDtos = externalApiService.fetchFakers(reqDto.getSeed(), reqDto.getQuantity());
-
-        // 3. 서비스에 필요한 회원 정보 저장
-        initService.saveInitData(userDtos);
-
+        initService.init(reqDto);
         return ApiResponse.success(null);
     }
 

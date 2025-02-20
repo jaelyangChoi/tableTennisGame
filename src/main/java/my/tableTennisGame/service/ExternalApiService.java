@@ -1,4 +1,4 @@
-package my.tableTennisGame.service.init;
+package my.tableTennisGame.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

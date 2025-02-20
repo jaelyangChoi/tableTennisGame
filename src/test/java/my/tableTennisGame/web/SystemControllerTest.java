@@ -1,8 +1,8 @@
 package my.tableTennisGame.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import my.tableTennisGame.service.init.ExternalApiService;
-import my.tableTennisGame.service.init.InitService;
+import my.tableTennisGame.service.ExternalApiService;
+import my.tableTennisGame.service.InitService;
 import my.tableTennisGame.web.dto.init.InitReqDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,9 +26,6 @@ class SystemControllerTest {
 
     @MockitoBean
     private InitService initService;
-
-    @MockitoBean
-    private ExternalApiService externalApiService;
 
     @Autowired
     private ObjectMapper objectMapper;

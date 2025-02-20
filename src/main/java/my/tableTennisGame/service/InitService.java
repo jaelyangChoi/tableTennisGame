@@ -1,4 +1,4 @@
-package my.tableTennisGame.service.init;
+package my.tableTennisGame.service;
 
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import my.tableTennisGame.domain.user.User;
 import my.tableTennisGame.domain.user.UserStatus;
 import my.tableTennisGame.repository.UserRepository;
+import my.tableTennisGame.web.dto.init.FakerApiRespDto;
+import my.tableTennisGame.web.dto.init.InitReqDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.Comparator;
@@ -21,6 +23,19 @@ public class InitService {
 
     private final EntityManager em;
     private final UserRepository userRepository;
+    private final ExternalApiService externalApiService;
+
+
+    public void init(InitReqDto reqDto) {
+        // 1. 테이블 초기화
+        resetDatabase();
+
+        // 2. 전달받은 데이터로 fakerAPI 호출
+        List<FakerApiRespDto.UserDto> userDtos = externalApiService.fetchFakers(reqDto.getSeed(), reqDto.getQuantity());
+
+        // 3. 서비스에 필요한 회원 정보 저장
+        saveInitData(userDtos);
+    }
 
     /**
      * /init 호출 시, 테이블 초기화
@@ -86,5 +101,6 @@ public class InitService {
         return em.createNativeQuery("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'PUBLIC'")
                 .getResultList();
     }
+
 
 }
