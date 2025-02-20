@@ -19,7 +19,7 @@ public class RoomRespDto {
         private int hostId;
         private String roomType; // SINGLE(단식), DOUBLE(복식)
         private String status; // WAIT(대기), PROGRESS(진행중), FINISH(완료)
-        private String cratedAt;
+        private String createdAt;
         private String updatedAt;
 
         public RoomDetailDto(Room room) {
@@ -28,7 +28,7 @@ public class RoomRespDto {
             this.hostId = room.getHost().getId();
             this.roomType = room.getRoomType().name();
             this.status = room.getStatus().name();
-            this.cratedAt = room.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            this.createdAt = room.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
             this.updatedAt = room.getUpdatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         }
     }

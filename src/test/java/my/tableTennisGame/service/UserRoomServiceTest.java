@@ -2,6 +2,7 @@ package my.tableTennisGame.service;
 
 import my.tableTennisGame.domain.room.Room;
 import my.tableTennisGame.domain.user.User;
+import my.tableTennisGame.domain.userRoom.Team;
 import my.tableTennisGame.domain.userRoom.UserRoom;
 import my.tableTennisGame.dummy.DummyObject;
 import my.tableTennisGame.repository.UserRoomRepository;
@@ -38,7 +39,7 @@ class UserRoomServiceTest extends DummyObject {
         when(userRoomRepository.save(any())).thenAnswer(invocationOnMock -> invocationOnMock.getArgument(0));
 
         // when
-        UserRoom userRoom = userRoomService.addUserToRoom(mockHost, mockRoom);
+        UserRoom userRoom = userRoomService.addUserToRoom(mockHost, mockRoom, Team.RED);
 
         // then
         assertNotNull(userRoom);

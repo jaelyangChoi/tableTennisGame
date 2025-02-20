@@ -2,6 +2,7 @@ package my.tableTennisGame.service;
 
 import my.tableTennisGame.domain.room.Room;
 import my.tableTennisGame.domain.user.User;
+import my.tableTennisGame.domain.userRoom.Team;
 import my.tableTennisGame.dummy.DummyObject;
 import my.tableTennisGame.repository.RoomRepository;
 import my.tableTennisGame.web.dto.room.RoomReqDto.RoomCreateReqDto;
@@ -49,7 +50,7 @@ class RoomServiceTest extends DummyObject {
 
         verify(userService).getValidUser(userId);
         verify(roomRepository).save(any());
-        verify(userRoomService).addUserToRoom(mockHost, mockRoom);
+        verify(userRoomService).addUserToRoom(mockHost, mockRoom, Team.RED);
         verifyNoMoreInteractions(userService, roomRepository, userRoomService);
     }
 

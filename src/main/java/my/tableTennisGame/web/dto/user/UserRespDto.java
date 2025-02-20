@@ -33,7 +33,7 @@ public class UserRespDto {
             private String name;
             private String email;
             private String status;
-            private String cratedAt;
+            private String createdAt;
             private String updatedAt;
 
             public UserDto(User user) {
@@ -42,7 +42,7 @@ public class UserRespDto {
                 this.name = user.getName();
                 this.email = user.getEmail();
                 this.status = user.getStatus().name();
-                this.cratedAt = user.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                this.createdAt = user.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
                 this.updatedAt = user.getUpdatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
             }
         }

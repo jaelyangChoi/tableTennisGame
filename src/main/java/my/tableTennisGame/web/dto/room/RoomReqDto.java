@@ -25,4 +25,10 @@ public class RoomReqDto {
                     .build();
         }
     }
+
+    @Getter
+    @Setter
+    public static class RoomAttentionReqDto {
+        private int userId;
+    }
 }
