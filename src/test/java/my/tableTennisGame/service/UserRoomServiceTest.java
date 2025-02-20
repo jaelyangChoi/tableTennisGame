@@ -32,7 +32,7 @@ class UserRoomServiceTest extends DummyObject {
         // given
         int userId = 1;
         String roomType = "SINGLE";
-        User mockHost = newMockUser(userId, "jaeryang");
+        User mockHost = newMockUser(userId);
         Room mockRoom = newMockRoom(1, mockHost, roomType);
         when(userRoomRepository.save(any())).thenAnswer(invocationOnMock -> invocationOnMock.getArgument(0));
 

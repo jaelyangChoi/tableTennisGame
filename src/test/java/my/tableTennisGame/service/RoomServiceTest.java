@@ -37,7 +37,7 @@ class RoomServiceTest extends DummyObject {
         int userId = 1;
         String roomType = "SINGLE";
         RoomCreateReqDto roomCreateReqDto = createRequest(userId, roomType);
-        User mockHost = newMockUser(userId, "jaeryang");
+        User mockHost = newMockUser(userId);
         Room mockRoom = newMockRoom(1, mockHost, roomType);
 
         when(userService.getValidUser(userId)).thenReturn(mockHost);

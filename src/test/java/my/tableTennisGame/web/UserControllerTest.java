@@ -37,20 +37,23 @@ class UserControllerTest extends DummyObject {
     @Test
     void findUserListApi() throws Exception {
         // given
+        int page = 0;
+        int size = 10;
         List<User> mockUsers = newMockUsers(1, 10, UserStatus.ACTIVE);
-        PageImpl<User> userPage = new PageImpl<>(mockUsers, PageRequest.of(0, 10), 10);
+        PageImpl<User> userPage = new PageImpl<>(mockUsers, PageRequest.of(page, size), mockUsers.size());
         UserListRespDto userListRespDto = new UserListRespDto(userPage);
 
         when(userService.findUserList(any(Pageable.class))).thenReturn(userListRespDto);
 
+        // when & then
         mockMvc.perform(get("/user")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .param("page", "0")
-                        .param("size", "10"))
+                        .param("page", String.valueOf(page))
+                        .param("size", String.valueOf(size)))
                 .andExpect(jsonPath("$.code").value(HttpStatus.OK.value()))
                 .andExpect(jsonPath("$.message").value("API 요청이 성공했습니다."))
                 .andExpect(jsonPath("$.result.totalElements").value("10"))
                 .andExpect(jsonPath("$.result.totalPages").value("1"))
-                .andExpect(jsonPath("$.result.userList.length()").value("10"));
+                .andExpect(jsonPath("$.result.userList.length()").value(mockUsers.size()));
     }
 }

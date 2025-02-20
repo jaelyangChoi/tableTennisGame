@@ -1,6 +1,7 @@
 package my.tableTennisGame.dummy;
 
 import my.tableTennisGame.domain.room.Room;
+import my.tableTennisGame.domain.room.RoomStatus;
 import my.tableTennisGame.domain.room.RoomType;
 import my.tableTennisGame.domain.user.User;
 import my.tableTennisGame.domain.user.UserStatus;
@@ -13,10 +14,10 @@ import java.util.stream.IntStream;
 //상속 받은 클래스에서 해당 메소드 사용
 public class DummyObject {
 
-    protected User newMockUser(int id, String name) {
+    protected User newMockUser(int id) {
         return User.builder()
                 .id(id)
-                .name(name)
+                .name("test" + id)
                 .build();
     }
 
@@ -42,6 +43,23 @@ public class DummyObject {
                 .host(host)
                 .roomType(RoomType.valueOf(roomType))
                 .build();
-
     }
+
+    protected List<Room> newMockRooms(int fromId, int toId, String roomType) {
+        return IntStream.range(fromId, toId + 1)
+                .mapToObj(i -> {
+                    Room room = Room.builder()
+                            .id(i)
+                            .title("test" + i)
+                            .roomType(RoomType.valueOf(roomType))
+                            .host(newMockUser(i))
+                            .status(RoomStatus.WAIT)
+                            .build();
+                    ReflectionTestUtils.setField(room, "createdAt", LocalDateTime.now());
+                    ReflectionTestUtils.setField(room, "updatedAt", LocalDateTime.now());
+                    return room;
+                })
+                .toList();
+    }
+
 }
