@@ -35,7 +35,7 @@ public class UserService {
     /**
      * 유저가 활성(ACTIVE) 상태이고, 현재 참여한 방이 없을때만 방 생성 가능
      */
-    public User validateHost(int userId) {
+    public User getValidUser(int userId) {
         Optional<User> findUser = userRepository.findById(userId);
 
         if (findUser.isEmpty())

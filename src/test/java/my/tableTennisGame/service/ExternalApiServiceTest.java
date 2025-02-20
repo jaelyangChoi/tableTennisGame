@@ -1,7 +1,6 @@
-package my.tableTennisGame.service.init;
+package my.tableTennisGame.service;
 
 import my.tableTennisGame.config.ExternalApiProperties;
-import my.tableTennisGame.service.ExternalApiService;
 import my.tableTennisGame.web.dto.init.FakerApiRespDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

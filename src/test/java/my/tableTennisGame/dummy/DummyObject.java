@@ -1,5 +1,7 @@
 package my.tableTennisGame.dummy;
 
+import my.tableTennisGame.domain.room.Room;
+import my.tableTennisGame.domain.room.RoomType;
 import my.tableTennisGame.domain.user.User;
 import my.tableTennisGame.domain.user.UserStatus;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -10,6 +12,13 @@ import java.util.stream.IntStream;
 
 //상속 받은 클래스에서 해당 메소드 사용
 public class DummyObject {
+
+    protected User newMockUser(int id, String name) {
+        return User.builder()
+                .id(id)
+                .name(name)
+                .build();
+    }
 
     protected List<User> newMockUsers(int fromId, int toId, UserStatus userStatus) {
         return IntStream.range(fromId, toId + 1)
@@ -25,5 +34,14 @@ public class DummyObject {
                     return user;
                 })
                 .toList();
+    }
+
+    protected Room newMockRoom(int id, User host, String roomType) {
+        return Room.builder()
+                .id(id)
+                .host(host)
+                .roomType(RoomType.valueOf(roomType))
+                .build();
+
     }
 }

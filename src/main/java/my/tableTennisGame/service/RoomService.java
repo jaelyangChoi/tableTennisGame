@@ -21,12 +21,12 @@ public class RoomService {
     @Transactional
     public void createRoom(RoomCreateReqDto roomCreateReqDto) {
         // 1. 유저 유효성 검사 - 존재 여부, 활성 상태 여부, 기 참여 여부
-        User user = userService.validateHost(roomCreateReqDto.getUserId());
+        User host = userService.getValidUser(roomCreateReqDto.getUserId());
 
         // 2. 방 생성
-        Room room = roomRepository.save(roomCreateReqDto.toEntity(user));
+        Room room = roomRepository.save(roomCreateReqDto.toEntity(host));
 
         //3. 사용자-방 참여 매핑 (방 생성자가 방에 자동 참여)
-        userRoomService.addUserToRoom(user, room);
+        userRoomService.addUserToRoom(host, room);
     }
 }
