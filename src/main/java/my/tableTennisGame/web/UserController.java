@@ -1,7 +1,7 @@
 package my.tableTennisGame.web;
 
 import lombok.RequiredArgsConstructor;
-import my.tableTennisGame.service.user.UserService;
+import my.tableTennisGame.service.UserService;
 import my.tableTennisGame.web.docs.UserControllerDocs;
 import my.tableTennisGame.web.dto.ApiResponse;
 import my.tableTennisGame.web.dto.user.UserRespDto.UserListRespDto;

@@ -41,6 +41,15 @@ spring:
     username: sa
     password:
 
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 100
+    open-in-view: false
+
 logging:
   level:
     org.hibernate.orm.jdbc.bind: TRACE
