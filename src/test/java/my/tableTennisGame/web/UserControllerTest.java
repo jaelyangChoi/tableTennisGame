@@ -50,7 +50,7 @@ class UserControllerTest extends DummyObject {
                         .contentType(MediaType.APPLICATION_JSON)
                         .param("page", String.valueOf(page))
                         .param("size", String.valueOf(size)))
-                .andExpect(jsonPath("$.code").value(HttpStatus.OK.value()))
+                .andExpect(jsonPath("$.code").value(200))
                 .andExpect(jsonPath("$.message").value("API 요청이 성공했습니다."))
                 .andExpect(jsonPath("$.result.totalElements").value("10"))
                 .andExpect(jsonPath("$.result.totalPages").value("1"))

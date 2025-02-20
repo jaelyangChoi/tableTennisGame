@@ -37,12 +37,16 @@ public class DummyObject {
                 .toList();
     }
 
-    protected Room newMockRoom(int id, User host, String roomType) {
-        return Room.builder()
+    protected Room newMockRoom(int id, User host, String roomType, String roomStatus) {
+        Room room = Room.builder()
                 .id(id)
                 .host(host)
                 .roomType(RoomType.valueOf(roomType))
+                .status(RoomStatus.valueOf(roomStatus))
                 .build();
+        ReflectionTestUtils.setField(room, "createdAt", LocalDateTime.now());
+        ReflectionTestUtils.setField(room, "updatedAt", LocalDateTime.now());
+        return room;
     }
 
     protected List<Room> newMockRooms(int fromId, int toId, String roomType) {

@@ -1,11 +1,12 @@
 package my.tableTennisGame.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import my.tableTennisGame.common.exception.WrongRequestException;
 import my.tableTennisGame.domain.room.Room;
+import my.tableTennisGame.domain.room.RoomStatus;
 import my.tableTennisGame.dummy.DummyObject;
 import my.tableTennisGame.service.RoomService;
 import my.tableTennisGame.web.dto.room.RoomReqDto.RoomCreateReqDto;
-import my.tableTennisGame.web.dto.room.RoomRespDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,10 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static my.tableTennisGame.web.dto.room.RoomRespDto.*;
+import static my.tableTennisGame.web.dto.room.RoomRespDto.RoomDetailDto;
+import static my.tableTennisGame.web.dto.room.RoomRespDto.RoomListRespDto;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -70,18 +73,49 @@ class RoomControllerTest extends DummyObject {
         PageImpl<Room> roomPage = new PageImpl<>(mockRooms, PageRequest.of(page, size), mockRooms.size());
         RoomListRespDto roomListRespDto = new RoomListRespDto(roomPage);
 
-        when(roomService.findRoomList(any(Pageable.class))).thenReturn(roomListRespDto);
+        when(roomService.getRoomList(any(Pageable.class))).thenReturn(roomListRespDto);
 
         // when & then
         mockMvc.perform(get("/room")
-                        .contentType(MediaType.APPLICATION_JSON)
                         .param("page", String.valueOf(page))
                         .param("size", String.valueOf(size)))
-                .andExpect(jsonPath("$.code").value(HttpStatus.OK.value()))
+                .andExpect(jsonPath("$.code").value(200))
                 .andExpect(jsonPath("$.message").value("API 요청이 성공했습니다."))
                 .andExpect(jsonPath("$.result.totalElements").value(mockRooms.size()))
-                .andExpect(jsonPath("$.result.totalPages").value(mockRooms.size()/size))
+                .andExpect(jsonPath("$.result.totalPages").value(mockRooms.size() / size))
                 .andExpect(jsonPath("$.result.roomList.length()").value(mockRooms.size()));
+    }
+
+    @DisplayName("방 상세 조회 테스트_성공")
+    @Test
+    void getRoomDetail_success() throws Exception {
+        // given
+        int roomId = 1;
+        String roomType = "SINGLE";
+        String roomStatus = "WAIT";
+        RoomDetailDto roomDetailDto = new RoomDetailDto(newMockRoom(roomId, newMockUser(1), roomType, roomStatus));
+
+        when(roomService.getRoomDetails(roomId)).thenReturn(roomDetailDto);
+
+        // when & then
+        mockMvc.perform(get("/room/" + roomId))
+                .andExpect(jsonPath("$.code").value(200))
+                .andExpect(jsonPath("$.message").value("API 요청이 성공했습니다."))
+                .andExpect(jsonPath("$.result.id").value(roomId))
+                .andExpect(jsonPath("$.result.roomType").value(roomType));
+    }
+
+    @DisplayName("방 상세 조회 테스트_실패")
+    @Test
+    void getRoomDetail_fail() throws Exception {
+        // given
+        when(roomService.getRoomDetails(anyInt())).thenThrow(WrongRequestException.class);
+
+        // when & then
+        mockMvc.perform(get("/room/" + 1))
+                .andExpect(jsonPath("$.code").value(201))
+                .andExpect(jsonPath("$.message").value("불가능한 요청입니다."))
+                .andExpect(jsonPath("$.result").doesNotExist());
     }
 
 }

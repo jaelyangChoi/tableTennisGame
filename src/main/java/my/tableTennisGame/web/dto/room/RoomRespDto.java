@@ -5,10 +5,33 @@ import lombok.Setter;
 import my.tableTennisGame.domain.room.Room;
 import org.springframework.data.domain.Page;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class RoomRespDto {
+
+    @Getter
+    @Setter
+    public static class RoomDetailDto {
+        private int id;
+        private String title;
+        private int hostId;
+        private String roomType; // SINGLE(단식), DOUBLE(복식)
+        private String status; // WAIT(대기), PROGRESS(진행중), FINISH(완료)
+        private String cratedAt;
+        private String updatedAt;
+
+        public RoomDetailDto(Room room) {
+            this.id = room.getId();
+            this.title = room.getTitle();
+            this.hostId = room.getHost().getId();
+            this.roomType = room.getRoomType().name();
+            this.status = room.getStatus().name();
+            this.cratedAt = room.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            this.updatedAt = room.getUpdatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        }
+    }
 
     @Getter
     @Setter

@@ -1,10 +1,12 @@
 package my.tableTennisGame.service;
 
 import lombok.RequiredArgsConstructor;
+import my.tableTennisGame.common.exception.WrongRequestException;
 import my.tableTennisGame.domain.room.Room;
 import my.tableTennisGame.domain.user.User;
 import my.tableTennisGame.repository.RoomRepository;
 import my.tableTennisGame.web.dto.room.RoomReqDto.RoomCreateReqDto;
+import my.tableTennisGame.web.dto.room.RoomRespDto.RoomDetailDto;
 import my.tableTennisGame.web.dto.room.RoomRespDto.RoomListRespDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,8 +35,14 @@ public class RoomService {
         userRoomService.addUserToRoom(host, room);
     }
 
-    public RoomListRespDto findRoomList(Pageable pageable) {
+    public RoomListRespDto getRoomList(Pageable pageable) {
         Page<Room> roomPage = roomRepository.findAll(pageable);
         return new RoomListRespDto(roomPage);
+    }
+
+    public RoomDetailDto getRoomDetails(int roomId) {
+        Room room = roomRepository.findById(roomId)
+                .orElseThrow(() -> new WrongRequestException("존재하지 않는 방입니다."));
+        return new RoomDetailDto(room);
     }
 }

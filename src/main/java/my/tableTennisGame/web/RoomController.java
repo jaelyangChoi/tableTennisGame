@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import my.tableTennisGame.service.RoomService;
 import my.tableTennisGame.web.docs.RoomControllerDocs;
 import my.tableTennisGame.web.dto.ApiResponse;
+import my.tableTennisGame.web.dto.room.RoomRespDto;
+import my.tableTennisGame.web.dto.room.RoomRespDto.RoomDetailDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -27,7 +29,14 @@ public class RoomController implements RoomControllerDocs {
 
     @GetMapping
     public ApiResponse<RoomListRespDto> getAllRooms(@PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
-        RoomListRespDto roomListRespDto = roomService.findRoomList(pageable);
+        RoomListRespDto roomListRespDto = roomService.getRoomList(pageable);
         return ApiResponse.success(roomListRespDto);
     }
+
+    @GetMapping("/{roomId}")
+    public ApiResponse<RoomDetailDto> getRoomDetails(@PathVariable int roomId) {
+        RoomDetailDto roomDetailDto = roomService.getRoomDetails(roomId);
+        return ApiResponse.success(roomDetailDto);
+    }
+
 }
