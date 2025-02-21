@@ -28,6 +28,7 @@ public class PlayController {
 
     @PutMapping("/team/{roomId}")
     public ApiResponse<?> changeTeam(@PathVariable int roomId, @RequestBody TeamChangeReqDto teamChangeReqDto) {
+        playService.changeTeam(roomId, teamChangeReqDto.getUserId());
         return ApiResponse.success(null);
     }
 }

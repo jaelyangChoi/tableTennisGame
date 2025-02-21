@@ -111,16 +111,22 @@ public class RoomService {
      * - 한 쪽 팀에 인원이 모두 찬 경우, 반대팀으로 배정
      * - 양쪽 팀에 모두 자리가 있는 경우, RED 팀에 먼저 배정
      */
-    private Team assignedTeam(Room room) {
+    public Team assignedTeam(Room room) {
         int roomCapacity = room.getRoomType().equals(RoomType.SINGLE) ? 2 : 4;
-        int teamCapacity = roomCapacity / 2;
+        int redCapacity = roomCapacity / 2;
+        int redCnt = 0;
 
         List<UserRoom> participants = userRoomService.findParticipants(room.getId());
 
         if (participants.size() >= roomCapacity)
             throw new WrongRequestException("참가하고자 하는 방의 인원이 모두 찼습니다.");
 
+        for (UserRoom userRoom : participants) {
+            if (userRoom.getTeam().equals(Team.RED))
+                redCnt++;
+        }
+
         //한 쪽 팀에 인원이 모두 찬 경우, BLUE 팀으로 배정
-        return participants.size() >= teamCapacity ? Team.BLUE : Team.RED;
+        return redCapacity > redCnt ? Team.RED : Team.BLUE;
     }
 }

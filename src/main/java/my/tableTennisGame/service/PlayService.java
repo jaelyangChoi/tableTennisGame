@@ -28,6 +28,25 @@ public class PlayService {
     private final RoomRepository roomRepository;
 
     /**
+     * 팀 변경
+     * 유저(userId)가 현재 해당 방(roomId)에 참가한 상태에서만 팀 변경 가능
+     * 현재 방의 상태가 대기(WAIT) 상태일 때만 팀 변경 가능
+     * 변경되려는 팀의 인원이 이미 해당 방 정원의 절반과 같다면 팀이 변경되지 않고 201 응답을 반환
+     * 유저(userId)가 현재 속한 팀 기준 반대 팀으로 변경 (RED -> BLUE / BLUE -> RED)
+     */
+    public void changeTeam(int roomId, int userId) {
+        UserRoom findUserRoom = userRoomService.findParticipatingUser(roomId, userId)
+                .orElseThrow(() -> new WrongRequestException("해당 방 Id와 유저 Id로 참여 정보가 없습니다."));
+
+        // 검증
+        Room room = findUserRoom.getRoom();
+        if (!room.getStatus().equals(RoomStatus.WAIT))
+            throw new WrongRequestException("현재 방의 상태가 대기(WAIT) 상태일 때만 팀을 변경할 수 있습니다.");
+
+
+    }
+
+    /**
      * 게임 시작
      * 호스트인 유저만 게임을 시작할 수 있다.
      * 현재 방의 상태가 대기(WAIT) 상태일 때만 시작할 수 있다.

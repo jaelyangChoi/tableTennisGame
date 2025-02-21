@@ -11,12 +11,17 @@ import my.tableTennisGame.web.dto.room.RoomReqDto.RoomCreateReqDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -81,7 +86,7 @@ class RoomServiceTest extends DummyObject {
 
         when(userService.getValidUser(userId)).thenReturn(user);
         when(roomRepository.findById(roomId)).thenReturn(Optional.ofNullable(room));
-        when(userRoomService.findParticipants(roomId)).thenReturn(List.of(UserRoom.builder().build()));
+        when(userRoomService.findParticipants(roomId)).thenReturn(List.of(UserRoom.builder().team(Team.RED).build()));
 
         // when
         roomService.participateToRoom(roomId, userId);
@@ -141,4 +146,92 @@ class RoomServiceTest extends DummyObject {
         assertThat(room.getStatus()).isEqualTo(RoomStatus.FINISH);
     }
 
+    @DisplayName("팀 할당 테스트 - RED 팀 먼저 할당")
+    @Test
+    void assignedTeam() {
+        // given
+        Room testRoom = newMockRoom(1, null, "DOUBLE", "WAIT");
+        List<UserRoom> urList = List.of(
+                UserRoom.builder().team(Team.RED).build(),
+                UserRoom.builder().team(Team.BLUE).build());
+
+        when(userRoomService.findParticipants(testRoom.getId())).thenReturn(urList);
+
+        // when
+        Team resultTeam = roomService.assignedTeam(testRoom);
+        assertThat(resultTeam).isEqualTo(Team.RED);
+    }
+
+    @DisplayName("팀 할당 테스트 - RED 멤버가 나간 경우 RED 에 다시 할당")
+    @Test
+    void assignedTeam_blue() {
+        // given
+        Room testRoom = newMockRoom(1, null, "DOUBLE", "WAIT");
+        List<UserRoom> urList = List.of(
+                UserRoom.builder().team(Team.RED).build(),
+                UserRoom.builder().team(Team.RED).build(),
+                UserRoom.builder().team(Team.BLUE).build());
+
+        when(userRoomService.findParticipants(testRoom.getId())).thenReturn(urList);
+
+        // when
+        Team resultTeam = roomService.assignedTeam(testRoom);
+        assertThat(resultTeam).isEqualTo(Team.BLUE);
+    }
+
+    @DisplayName("팀 할당 테스트 - 단식")
+    @Test
+    void assignedTeam_single() {
+        // given
+        Room testRoom = newMockRoom(1, null, "SINGLE", "WAIT");
+        List<UserRoom> urList = List.of(UserRoom.builder().team(Team.RED).build());
+
+        when(userRoomService.findParticipants(testRoom.getId())).thenReturn(urList);
+
+        // when
+        Team resultTeam = roomService.assignedTeam(testRoom);
+        assertThat(resultTeam).isEqualTo(Team.BLUE);
+    }
+
+    @DisplayName("팀 할당 테스트 - 복식")
+    @ParameterizedTest(name = "{index} => 기존 팀: {2}, 예상 할당 팀: {1}")
+    @MethodSource("provideTeamAssignmentTestCases")
+    void assignedTeam_Double(List<UserRoom> existingTeams, Team expectedTeam, String teamNames) {
+        // given
+        Room testRoom = newMockRoom(1, null, "DOUBLE", "WAIT");
+        when(userRoomService.findParticipants(testRoom.getId())).thenReturn(existingTeams);
+
+        // when
+        Team resultTeam = roomService.assignedTeam(testRoom);
+
+        // then
+        assertThat(resultTeam).isEqualTo(expectedTeam);
+    }
+
+    /**
+     * 팀 할당 테스트 데이터 제공
+     */
+    private static Stream<Arguments> provideTeamAssignmentTestCases() {
+        return Stream.of(
+                createTestCase(List.of(
+                        UserRoom.builder().team(Team.RED).build(),
+                        UserRoom.builder().team(Team.BLUE).build()), Team.RED),
+                createTestCase(List.of(
+                        UserRoom.builder().team(Team.RED).build(),
+                        UserRoom.builder().team(Team.RED).build(),
+                        UserRoom.builder().team(Team.BLUE).build()), Team.BLUE),
+                createTestCase(List.of(
+                        UserRoom.builder().team(Team.RED).build(),
+                        UserRoom.builder().team(Team.BLUE).build(),
+                        UserRoom.builder().team(Team.BLUE).build()), Team.RED)
+        );
+    }
+
+    private static Arguments createTestCase(List<UserRoom> teamList, Team expectedTeam) {
+        String teamNames = teamList.stream()
+                .map(userRoom -> userRoom.getTeam().name())
+                .collect(Collectors.joining(", "));
+
+        return Arguments.of(teamList, expectedTeam, teamNames);
+    }
 }
