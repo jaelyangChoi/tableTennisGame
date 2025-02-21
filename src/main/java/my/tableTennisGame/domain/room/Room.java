@@ -29,4 +29,11 @@ public class Room extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private RoomStatus status;
 
+    public void finish() {
+        status = RoomStatus.FINISH;
+    }
+
+    public void progress(){
+        status = RoomStatus.PROGRESS;
+    }
 }

@@ -17,7 +17,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -76,6 +78,33 @@ public class RoomService {
         // 팀 등록
         userRoomService.addUserToRoom(user, room, assignedTeam);
     }
+
+    /**
+     * 방 나가기
+     * 유저(userId)가 현재 해당 방(roomId)에 참가한 상태일 때만, 나가기가 가능
+     * 이미 시작(PROGRESS) 상태인 방이거나 끝난(FINISH) 상태의 방은 나갈 수 없다.
+     * 호스트가 방을 나가게 되면 방에 있던 모든 사람도 해당 방에서 나가게 되고, 방은 FINISH 상태가 된다.
+     */
+    @Transactional
+    public void out(int roomId, int userId) {
+        //유저(userId)가 현재 해당 방(roomId)에 참가한 상태일 때만, 나가기가 가능
+        UserRoom findUserRoom = userRoomService.findParticipatingUser(roomId, userId)
+                .orElseThrow(() -> new WrongRequestException("해당 방 Id와 유저 Id로 참여 정보가 없습니다."));
+
+        //대기 상태인 방만 나가기 가능
+        Room room = findUserRoom.getRoom();
+        if (!room.getStatus().equals(RoomStatus.WAIT))
+            throw new WrongRequestException("이미 시작(PROGRESS) 상태인 방이거나 끝난(FINISH) 상태의 방은 나갈 수 없습니다.");
+
+        //호스트가 방을 나가게 되면 방에 있던 모든 사람도 해당 방에서 나가게 되고, 방은 FINISH 상태가 된다.
+        if (room.getHost().getId().equals(userId)) {
+            userRoomService.deleteRoom(room.getId());
+            room.finish();
+            return;
+        }
+        userRoomService.delete(findUserRoom);
+    }
+
 
     /**
      * 정원 검증 및 팀 배정

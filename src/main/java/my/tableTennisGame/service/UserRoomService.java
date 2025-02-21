@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,5 +35,17 @@ public class UserRoomService {
 
     public List<UserRoom> findParticipants(Integer roomId) {
         return userRoomRepository.findByRoomId(roomId);
+    }
+
+    public Optional<UserRoom> findParticipatingUser(int roomId, int userId) {
+        return userRoomRepository.findByRoomIdAndUserId(roomId, userId);
+    }
+
+    public void delete(UserRoom findUserRoom) {
+        userRoomRepository.delete(findUserRoom);
+    }
+
+    public void deleteRoom(int roomId) {
+        userRoomRepository.deleteByRoomId(roomId);
     }
 }

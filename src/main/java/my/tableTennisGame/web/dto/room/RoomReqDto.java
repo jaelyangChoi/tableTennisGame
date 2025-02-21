@@ -31,4 +31,10 @@ public class RoomReqDto {
     public static class RoomAttentionReqDto {
         private int userId;
     }
+
+    @Getter
+    @Setter
+    public static class RoomOutReqDto {
+        private int userId;
+    }
 }
