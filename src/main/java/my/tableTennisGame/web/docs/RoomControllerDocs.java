@@ -33,8 +33,14 @@ public interface RoomControllerDocs {
     public my.tableTennisGame.web.dto.ApiResponse<RoomRespDto.RoomDetailDto> getRoomDetails(@PathVariable int roomId);
 
     @Operation(summary = "방 참가 API", description = "방 id와 유저 id를 전달하면 해당 유저를 방에 참가시킨다.")
-    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "유저 Id 정보", content = @Content(schema = @Schema(implementation = RoomReqDto.RoomAttentionReqDto.class)))
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "유저 Id", content = @Content(schema = @Schema(implementation = RoomReqDto.RoomAttentionReqDto.class)))
     @Parameter(name = "roomId", description = "방 id")
     @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = ApiResponseSchema.class)))
     public my.tableTennisGame.web.dto.ApiResponse<?> participateToRoom(@PathVariable int roomId, @RequestBody RoomReqDto.RoomAttentionReqDto roomAttentionReqDto);
+
+    @Operation(summary = "방 나가기 API", description = "방 id와 유저 id를 전달하면 해당 유저를 방에서 나가기 처리한다. 호스트가 나가면 참여자가 모두 나가고 방이 FINISH 상태가 된다.")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "유저 Id", content = @Content(schema = @Schema(implementation = RoomReqDto.RoomOutReqDto.class)))
+    @Parameter(name = "roomId", description = "방 id")
+    @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = ApiResponseSchema.class)))
+    public my.tableTennisGame.web.dto.ApiResponse<?> outTheRoom(@PathVariable int roomId, @RequestBody RoomReqDto.RoomOutReqDto roomOutReqDto);
 }
