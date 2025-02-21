@@ -3,6 +3,7 @@ package my.tableTennisGame.service;
 import my.tableTennisGame.domain.room.Room;
 import my.tableTennisGame.domain.user.User;
 import my.tableTennisGame.domain.userRoom.Team;
+import my.tableTennisGame.domain.userRoom.UserRoom;
 import my.tableTennisGame.dummy.DummyObject;
 import my.tableTennisGame.repository.RoomRepository;
 import my.tableTennisGame.web.dto.room.RoomReqDto.RoomCreateReqDto;
@@ -13,7 +14,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
+import java.util.Optional;
+
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -61,4 +66,26 @@ class RoomServiceTest extends DummyObject {
         roomCreateReqDto.setTitle("test room by user" + userId);
         return roomCreateReqDto;
     }
+
+    @DisplayName("방 참가 서비스 테스트")
+    @Test
+    void participateToRoom() {
+        // given
+        int userId = 1;
+        int roomId = 1;
+
+        User user = newMockUser(userId);
+        Room room = newMockRoom(roomId, user, "SINGLE", "WAIT");
+
+        when(userService.getValidUser(userId)).thenReturn(user);
+        when(roomRepository.findById(roomId)).thenReturn(Optional.ofNullable(room));
+        when(userRoomService.findParticipants(roomId)).thenReturn(List.of(UserRoom.builder().build()));
+
+        // when
+        roomService.participateToRoom(roomId, userId);
+
+        //then
+        then(userRoomService).should().addUserToRoom(user, room, Team.BLUE); //Blue 팀에 배경되어야 함
+    }
+
 }

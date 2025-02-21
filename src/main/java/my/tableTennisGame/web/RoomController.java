@@ -4,15 +4,13 @@ import lombok.RequiredArgsConstructor;
 import my.tableTennisGame.service.RoomService;
 import my.tableTennisGame.web.docs.RoomControllerDocs;
 import my.tableTennisGame.web.dto.ApiResponse;
-import my.tableTennisGame.web.dto.room.RoomReqDto;
-import my.tableTennisGame.web.dto.room.RoomRespDto;
 import my.tableTennisGame.web.dto.room.RoomRespDto.RoomDetailDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
-import static my.tableTennisGame.web.dto.room.RoomReqDto.*;
+import static my.tableTennisGame.web.dto.room.RoomReqDto.RoomAttentionReqDto;
 import static my.tableTennisGame.web.dto.room.RoomReqDto.RoomCreateReqDto;
 import static my.tableTennisGame.web.dto.room.RoomRespDto.RoomListRespDto;
 

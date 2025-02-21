@@ -3,9 +3,9 @@ package my.tableTennisGame.web;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import my.tableTennisGame.common.exception.WrongRequestException;
 import my.tableTennisGame.domain.room.Room;
-import my.tableTennisGame.domain.room.RoomStatus;
 import my.tableTennisGame.dummy.DummyObject;
 import my.tableTennisGame.service.RoomService;
+import my.tableTennisGame.web.dto.room.RoomReqDto.RoomAttentionReqDto;
 import my.tableTennisGame.web.dto.room.RoomReqDto.RoomCreateReqDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -115,6 +115,23 @@ class RoomControllerTest extends DummyObject {
         mockMvc.perform(get("/room/" + 1))
                 .andExpect(jsonPath("$.code").value(201))
                 .andExpect(jsonPath("$.message").value("불가능한 요청입니다."))
+                .andExpect(jsonPath("$.result").doesNotExist());
+    }
+
+    @DisplayName("방 참가 API 컨트롤러 테스트")
+    @Test
+    void participateToRoom() throws Exception {
+        int roomId = 1;
+        int userId = 1;
+        RoomAttentionReqDto roomAttentionReqDto = new RoomAttentionReqDto();
+        roomAttentionReqDto.setUserId(userId);
+
+        // when & then
+        mockMvc.perform(post("/room/attention/" + roomId)
+                        .content(objectMapper.writeValueAsString(roomAttentionReqDto))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.code").value(HttpStatus.OK.value()))
+                .andExpect(jsonPath("$.message").value("API 요청이 성공했습니다."))
                 .andExpect(jsonPath("$.result").doesNotExist());
     }
 
