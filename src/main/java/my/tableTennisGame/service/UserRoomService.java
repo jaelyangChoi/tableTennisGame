@@ -41,10 +41,12 @@ public class UserRoomService {
         return userRoomRepository.findByRoomIdAndUserId(roomId, userId);
     }
 
+    @Transactional
     public void delete(UserRoom findUserRoom) {
         userRoomRepository.delete(findUserRoom);
     }
 
+    @Transactional
     public void deleteRoom(int roomId) {
         userRoomRepository.deleteByRoomId(roomId);
     }
