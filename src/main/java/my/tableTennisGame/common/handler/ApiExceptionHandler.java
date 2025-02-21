@@ -16,7 +16,7 @@ public class ApiExceptionHandler {
     @ExceptionHandler(WrongRequestException.class)
     public ResponseEntity<?> handleWrongRequestException(WrongRequestException e) {
         log.error(e.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+        return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse.wrong(null));
     }
 
