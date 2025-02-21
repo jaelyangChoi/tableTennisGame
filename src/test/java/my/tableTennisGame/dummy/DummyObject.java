@@ -76,4 +76,9 @@ public class DummyObject {
                 .build();
     }
 
+    protected List<UserRoom> newMockUserRooms(int fromId, int toId) {
+        return IntStream.range(fromId, toId+1)
+                .mapToObj(i-> UserRoom.builder().id(i).build())
+                .toList();
+    }
 }

@@ -89,7 +89,7 @@ public class PlayService {
         int roomCapacity = room.getRoomType().equals(RoomType.SINGLE) ? 2 : 4;
         List<UserRoom> participants = userRoomService.findParticipants(room.getId());
 
-        if (participants.size() < roomCapacity)
+        if (participants.size() != roomCapacity)
             throw new WrongRequestException("인원이 부족합니다.");
     }
 }
