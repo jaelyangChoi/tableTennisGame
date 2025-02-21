@@ -120,7 +120,7 @@ class RoomServiceTest extends DummyObject {
         verify(userRoomService, never()).deleteRoom(roomId);
     }
 
-    @DisplayName("방 나가기 서비스 테스트_호스트")
+    @DisplayName("방 나가기 서비스 테스트_호스트가 나가면 참여 인원이 모두 나가고 방 상태가 FINISH 가 된다.")
     @Test
     void out_host() {
         // given

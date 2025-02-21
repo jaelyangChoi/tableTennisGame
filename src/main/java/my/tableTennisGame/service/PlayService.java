@@ -6,6 +6,7 @@ import my.tableTennisGame.common.exception.WrongRequestException;
 import my.tableTennisGame.domain.room.Room;
 import my.tableTennisGame.domain.room.RoomStatus;
 import my.tableTennisGame.domain.room.RoomType;
+import my.tableTennisGame.domain.userRoom.Team;
 import my.tableTennisGame.domain.userRoom.UserRoom;
 import my.tableTennisGame.repository.RoomRepository;
 import org.springframework.scheduling.annotation.Async;
@@ -43,7 +44,25 @@ public class PlayService {
         if (!room.getStatus().equals(RoomStatus.WAIT))
             throw new WrongRequestException("현재 방의 상태가 대기(WAIT) 상태일 때만 팀을 변경할 수 있습니다.");
 
+        // 변경 가능 여부 확인 - 불가 시 오류
+        Team oppositeTeam = checkChangeTeam(findUserRoom, room);
 
+        findUserRoom.changeTeam(oppositeTeam);
+    }
+
+    private Team checkChangeTeam(UserRoom findUserRoom, Room room) {
+        Team oppositeTeam = findUserRoom.getTeam().equals(Team.RED) ? Team.BLUE : Team.RED;
+        int teamCapacity = room.getRoomType().equals(RoomType.SINGLE) ? 1 : 2;
+        int oppositeCnt = 0;
+
+        for (UserRoom ur : userRoomService.findParticipants(room.getId()))
+            if (ur.getTeam().equals(oppositeTeam))
+                oppositeCnt++;
+
+        if (teamCapacity == oppositeCnt)
+            throw new WrongRequestException("변경하려는 팀의 인원이 모두 찼습니다.");
+
+        return oppositeTeam;
     }
 
     /**

@@ -6,7 +6,7 @@ import my.tableTennisGame.domain.room.Room;
 import my.tableTennisGame.domain.user.User;
 
 @Entity
-@Table(name="user_room_tb")
+@Table(name = "user_room_tb")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
@@ -27,6 +27,10 @@ public class UserRoom {
 
     @Enumerated(EnumType.STRING)
     private Team team;
+
+    public void changeTeam(Team oppositeTeam) {
+        team = oppositeTeam;
+    }
 }
 /**
  * 어떤 유저가 어떤 방에 어떤 팀으로 있다
