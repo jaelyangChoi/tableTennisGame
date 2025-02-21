@@ -17,7 +17,7 @@ public interface UserRoomRepository extends JpaRepository<UserRoom, Integer> {
     @Query("select ur from UserRoom ur join fetch ur.room where ur.user.id = :userId and ur.room.id = :roomId")
     Optional<UserRoom> findByRoomIdAndUserId(int roomId, int userId);
 
-    @Modifying(clearAutomatically = true) //벌크 연산 최적화하지 않으면 select 후 n번 delete
+    @Modifying //벌크 연산 최적화하지 않으면 select 후 n번 delete
     @Query("delete from UserRoom ur where ur.room.id = :roomId")
     void deleteByRoomId(int roomId);
 }

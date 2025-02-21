@@ -68,18 +68,13 @@ public class InitService {
                 .sorted(Comparator.comparing(UserDto::getId))
                 .toList();
 
-        // 2. DTO를 엔티티로 변환
+        // 2. DTO 를 엔티티로 변환
         List<User> userEntities = sortedUserDtos.stream()
                 .map(this::convertToEntity)
                 .toList();
 
         // 3. 정렬된 엔티티 리스트를 DB에 저장
         userRepository.saveAll(userEntities);
-
-        for (User user : userEntities) {
-            log.info("user id: {}, fakerId:{}, name:{}, email:{}", user.getId(), user.getFakerId(), user.getName(), user.getEmail());
-        }
-
     }
 
     private User convertToEntity(UserDto userDto) {
@@ -93,7 +88,7 @@ public class InitService {
 
     private UserStatus setUserStatus(int id) {
         if (id <= 30) return UserStatus.ACTIVE;
-        else if (id <= 60) return UserStatus.WAIT;
+        if (id <= 60) return UserStatus.WAIT;
         return UserStatus.NON_ACTIVE;
     }
 
@@ -101,6 +96,5 @@ public class InitService {
         return em.createNativeQuery("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'PUBLIC'")
                 .getResultList();
     }
-
 
 }
