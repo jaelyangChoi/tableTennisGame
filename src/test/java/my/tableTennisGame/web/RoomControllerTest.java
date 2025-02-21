@@ -5,8 +5,10 @@ import my.tableTennisGame.common.exception.WrongRequestException;
 import my.tableTennisGame.domain.room.Room;
 import my.tableTennisGame.dummy.DummyObject;
 import my.tableTennisGame.service.RoomService;
+import my.tableTennisGame.web.dto.room.RoomReqDto;
 import my.tableTennisGame.web.dto.room.RoomReqDto.RoomAttentionReqDto;
 import my.tableTennisGame.web.dto.room.RoomReqDto.RoomCreateReqDto;
+import my.tableTennisGame.web.dto.room.RoomReqDto.RoomOutReqDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,5 +136,23 @@ class RoomControllerTest extends DummyObject {
                 .andExpect(jsonPath("$.message").value("API 요청이 성공했습니다."))
                 .andExpect(jsonPath("$.result").doesNotExist());
     }
+
+    @DisplayName("방 나가기 API 컨트롤러 테스트")
+    @Test
+    void outTheRoom() throws Exception {
+        int roomId = 1;
+        int userId = 1;
+        RoomOutReqDto roomOutReqDto = new RoomOutReqDto();
+        roomOutReqDto.setUserId(userId);
+
+        // when & then
+        mockMvc.perform(post("/room/out/" + roomId)
+                        .content(objectMapper.writeValueAsString(roomOutReqDto))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.code").value(HttpStatus.OK.value()))
+                .andExpect(jsonPath("$.message").value("API 요청이 성공했습니다."))
+                .andExpect(jsonPath("$.result").doesNotExist());
+    }
+
 
 }

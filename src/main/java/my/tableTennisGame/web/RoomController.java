@@ -48,7 +48,7 @@ public class RoomController implements RoomControllerDocs {
     }
 
     @PostMapping("/out/{roomId}")
-    public ApiResponse<?> outFromRoom(@PathVariable int roomId, @RequestBody RoomOutReqDto roomOutReqDto) {
+    public ApiResponse<?> outTheRoom(@PathVariable int roomId, @RequestBody RoomOutReqDto roomOutReqDto) {
         roomService.out(roomId, roomOutReqDto.getUserId());
         return ApiResponse.success(null);
     }
