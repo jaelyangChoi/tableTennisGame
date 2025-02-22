@@ -22,12 +22,14 @@
 9. 게임시작
 10. 팀 변경
 
+
+### API 문서 (Swagger)
+애플리케이션 실행 후 localhost:8080/swagger-ui.html 접속
+
 ---
 ## 요구 사항
 ### 1. 헬스 체크 API
    +  모든 시나리오에 대해 최초 1회 호출
-
-
 
 ### 2. 초기화 API
    + seed와 quantity를 body에 담아서 요청하면
