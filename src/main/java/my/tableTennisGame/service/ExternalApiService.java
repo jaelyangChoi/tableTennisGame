@@ -15,7 +15,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class ExternalApiService {
 
-    private final WebClient webClient;
+    private final WebClient webClient; //Spring WebFlux의 비동기 HTTP 클라이언트
     private final ExternalApiProperties externalApiProperties;
 
     /**
@@ -34,9 +34,9 @@ public class ExternalApiService {
                                 .queryParam("_quantity", quantity)
                                 .queryParam("_locale", fakerApi.getLocale())
                                 .build())
-                        .retrieve()
-                        .bodyToMono(FakerApiRespDto.class)
-                        .block())
+                        .retrieve() //HTTP 요청을 실행하고 응답을 받음
+                        .bodyToMono(FakerApiRespDto.class) //응답을 객체로 변환
+                        .block()) //비동기 데이터를 동기적으로 변환. 비동기 실행을 멈추고 동기적으로 데이터가 반환될 때까지 기다림.
                 .getData();
     }
 }

@@ -97,11 +97,11 @@ public class PlayService {
     private void play(Room room) {
         // 1. 방의 상태를 진행중(PROGRESS)으로 변경
         room.progress();
-        roomRepository.save(room);
+        roomRepository.save(room); //readOnly 로 조회한 room 은 스냅샷(변경 감지)이 남지 않기 때문에, 변경 후 save()를 명시적으로 호출해야 함.
         log.info("start play: {}, room status: {}", LocalDateTime.now(), room.getStatus());
 
         // 2. 1분 후 자동으로 FINISH 상태로 변경하는 비동기 작업 실행
-        scheduledRoomFinish(room.getId());
+        scheduledRoomFinish(room.getId()); //비동기 메서드는 별도의 쓰레드에서 실행되기 때문에 기존 트랜잭션과는 별개
     }
 
     /**

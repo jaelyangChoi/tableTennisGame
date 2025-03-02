@@ -5,7 +5,6 @@ import my.tableTennisGame.domain.room.RoomStatus;
 import my.tableTennisGame.domain.room.RoomType;
 import my.tableTennisGame.domain.user.User;
 import my.tableTennisGame.domain.user.UserStatus;
-import my.tableTennisGame.domain.userRoom.Team;
 import my.tableTennisGame.domain.userRoom.UserRoom;
 import org.springframework.test.util.ReflectionTestUtils;
 
